@@ -8,21 +8,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import repositories.SensorsRepository;
+import services.SensorsService;
 
 @RestController
 @RequestMapping("/sensors")
 public class SensorsController {
 
-    private  final SensorsRepository sensorsRepository;
+    private  final SensorsService sensorsService;
 
     @Autowired
-    public SensorsController(SensorsRepository sensorsRepository) {
-        this.sensorsRepository = sensorsRepository;
+    public SensorsController(SensorsService sensorsService) {
+        this.sensorsService = sensorsService;
     }
     //registration(POST)
     @PostMapping("/registration")
     public ResponseEntity<Sensors> registerSensor(@RequestBody Sensors sensor) {
-        return ResponseEntity.ok(sensorsRepository.save(sensor));
+        Sensors sensors = sensorsService.register(sensor);
+        return ResponseEntity.ok(sensors);
     }
-
 }

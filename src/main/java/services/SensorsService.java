@@ -15,15 +15,16 @@ public class SensorsService {
         this.sensorsRepository = sensorsRepository;
     }
 
-    public Sensors registerSensors(Sensors sensors) {
-        return sensorsRepository.save(sensors);
+    public Sensors register(Sensors sensor) {
+        sensorsRepository.findByName(sensor.getName()).ifPresent(s -> {
+            throw new RuntimeException("Сенсор с таким именем уже существует!");
+        });
+        return sensorsRepository.save(sensor);
     }
 
     public Sensors findByName(String name) {
         return sensorsRepository.findByName(name)
                 .orElseThrow(() -> new RuntimeException("Сенсор не найден!"));
     }
-
-
 
 }

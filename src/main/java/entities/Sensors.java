@@ -22,7 +22,7 @@ public class Sensors {
     @NotEmpty(message = "Имя не может быть пустым!")
     @Size(min = 3, max = 30, message = "Название сенсора должно быть только от 3 до 30 символов!")
     private String name;
-    @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER)
-    private List<Sensors> sensors;
+    @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
+    private List<Measurements> measurements;
 
 }

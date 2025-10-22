@@ -30,7 +30,7 @@ public class MeasurementsService {
 
         Sensors sensor = sensorsRepository.findByName(sensorName)
                 .orElseThrow(() -> new MeasurementNotCreatedException(
-                        "Sensor with name '" + sensorName + "' not found"));
+                        "Сенсор с именем: '" + sensorName + "' не найден!"));
 
         measurement.setSensor(sensor);
         measurementsRepository.save(measurement);
