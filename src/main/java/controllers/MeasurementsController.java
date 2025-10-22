@@ -1,7 +1,6 @@
 package controllers;
 
 import entities.Measurements;
-import entities.Sensors;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class MeasurementsController {
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid Measurements measurements,
-                                          BindingResult bindingResult, Sensors sensors) {
+                                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();

@@ -5,8 +5,6 @@ import entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repositories.MeasurementsRepository;
-import util.MeasurementNotCreatedException;
-
 
 import java.util.List;
 
