@@ -33,4 +33,10 @@ public class MeasurementsService {
     public List<Measurements> findAll() {
         return measurementsRepository.findAll();
     }
+
+    public Long findRainingMeasurements() {
+       return measurementsRepository.findAll().stream()
+                .filter(Measurements::isRaining)
+                .count();
+    }
 }

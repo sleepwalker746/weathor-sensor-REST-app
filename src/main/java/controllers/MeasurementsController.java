@@ -26,14 +26,21 @@ public class MeasurementsController {
     public MeasurementsController(MeasurementsService measurementsService) {
         this.measurementsService = measurementsService;
     }
-    //add(POST)
+
     //index(GET)
-    //rainyDayCount(GET)
     @GetMapping()
     public List <Measurements> getAllMeasurements(Pageable page) {
         return measurementsService.findAll();
     }
 
+    //rainyDayCount(GET)
+    @GetMapping("/rainyDaysCount")
+    public ResponseEntity<Long> getRainyDaysCount() {
+        Long count = measurementsService.findRainingMeasurements();
+        return ResponseEntity.ok(count);
+    }
+
+    //add(POST)
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> add(@RequestBody @Valid Measurements measurements,
                                           BindingResult bindingResult) {

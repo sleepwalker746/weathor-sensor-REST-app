@@ -8,7 +8,7 @@ import repositories.SensorsRepository;
 @Service
 public class SensorsService {
 
-    private SensorsRepository sensorsRepository;
+    private final SensorsRepository sensorsRepository;
 
     @Autowired
     public SensorsService (SensorsRepository sensorsRepository) {
