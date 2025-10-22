@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table (name = "sensors")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sensor {
+public class Sensors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,10 +22,7 @@ public class Sensor {
     @NotEmpty(message = "Имя не может быть пустым!")
     @Size(min = 3, max = 30, message = "Название сенсора должно быть только от 3 до 30 символов!")
     private String name;
-    @Column(name = "value")
-    @NotEmpty
-    @Size(min = -100, max = 100, message = "Значение должно быть в пределах от -100 до 100")
-    private int values;
-    @Column(name = "raining")
-    private boolean raining;
+    @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER)
+    private List<Sensors> sensors;
+
 }

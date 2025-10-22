@@ -1,37 +1,42 @@
 package services;
 
 import entities.Measurements;
-import jakarta.transaction.Transactional;
+import entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repositories.MeasurementsRepository;
-import util.MeasurementNotFoundException;
+import repositories.SensorsRepository;
+import util.MeasurementNotCreatedException;
+
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class MeasurementsService {
-
     private final MeasurementsRepository measurementsRepository;
+    private final SensorsRepository sensorsRepository;
 
     @Autowired
-    public MeasurementsService(MeasurementsRepository measurementsRepository) {
+    public MeasurementsService(MeasurementsRepository measurementsRepository,
+                               SensorsRepository sensorsRepository) {
         this.measurementsRepository = measurementsRepository;
+        this.sensorsRepository = sensorsRepository;
+    }
+
+    public void saveMeasurements(Measurements measurement) {
+
+        String sensorName = measurement.getSensor().getName();
+
+        Sensors sensor = sensorsRepository.findByName(sensorName)
+                .orElseThrow(() -> new MeasurementNotCreatedException(
+                        "Sensor with name '" + sensorName + "' not found"));
+
+        measurement.setSensor(sensor);
+        measurementsRepository.save(measurement);
     }
 
     public List<Measurements> findAll() {
         return measurementsRepository.findAll();
     }
-
-    public Measurements findByMeasurementId(int id) {
-        Optional<Measurements> foundMeasurements = measurementsRepository.findById(id);
-        return foundMeasurements.orElseThrow(() -> new MeasurementNotFoundException("Measurement with id: " + id + " not found"));
-    }
-
-    @Transactional
-    public void saveMeasurements(Measurements measurements) {
-        measurementsRepository.save(measurements);
-    }
-
 }

@@ -1,7 +1,10 @@
 package repositories;
 
-import entities.Sensor;
+import entities.Sensors;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SensorsRepository extends JpaRepository<Sensor, Integer> {
+import java.util.Optional;
+
+public interface SensorsRepository extends JpaRepository<Sensors, Integer> {
+    Optional<Sensors> findByName(String name);
 }
