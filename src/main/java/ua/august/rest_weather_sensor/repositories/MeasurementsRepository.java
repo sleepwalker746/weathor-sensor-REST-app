@@ -1,6 +1,6 @@
-package repositories;
+package ua.august.rest_weather_sensor.repositories;
 
-import entities.Measurements;
+import ua.august.rest_weather_sensor.entities.Measurements;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeasurementsRepository extends JpaRepository<Measurements, Integer> {

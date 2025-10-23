@@ -1,9 +1,9 @@
-package services;
+package ua.august.rest_weather_sensor.services;
 
-import entities.Sensors;
+import ua.august.rest_weather_sensor.entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.SensorsRepository;
+import ua.august.rest_weather_sensor.repositories.SensorsRepository;
 
 @Service
 public class SensorsService {

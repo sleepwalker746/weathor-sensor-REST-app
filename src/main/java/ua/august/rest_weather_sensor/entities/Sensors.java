@@ -1,5 +1,6 @@
-package entities;
+package ua.august.rest_weather_sensor.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -23,6 +24,7 @@ public class Sensors {
     @Size(min = 3, max = 30, message = "Название сенсора должно быть только от 3 до 30 символов!")
     private String name;
     @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Measurements> measurements;
 
 }

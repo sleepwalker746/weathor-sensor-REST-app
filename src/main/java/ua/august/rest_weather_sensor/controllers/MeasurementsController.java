@@ -1,6 +1,8 @@
-package controllers;
+package ua.august.rest_weather_sensor.controllers;
 
-import entities.Measurements;
+import org.modelmapper.ModelMapper;
+import ua.august.rest_weather_sensor.dto.MeasurementsDTO;
+import ua.august.rest_weather_sensor.entities.Measurements;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import services.MeasurementsService;
+import ua.august.rest_weather_sensor.services.MeasurementsService;
 import util.MeasurementNotCreatedException;
 import util.MeasurementsErrorResponse;
 
@@ -21,10 +23,12 @@ import java.util.List;
 public class MeasurementsController {
 
     private final MeasurementsService measurementsService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public MeasurementsController(MeasurementsService measurementsService) {
+    public MeasurementsController(MeasurementsService measurementsService, ModelMapper modelMapper) {
         this.measurementsService = measurementsService;
+        this.modelMapper = modelMapper;
     }
 
     //index(GET)
@@ -42,7 +46,7 @@ public class MeasurementsController {
 
     //add(POST)
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> add(@RequestBody @Valid Measurements measurements,
+    public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementsDTO measurementsDTO,
                                           BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
@@ -55,7 +59,7 @@ public class MeasurementsController {
             throw new ValidationException(errorMsg.toString());
         }
 
-        measurementsService.saveMeasurements(measurements);
+        measurementsService.saveMeasurements(measurementsDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -68,4 +72,6 @@ public class MeasurementsController {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    private Measurements convertToEntity(MeasurementsDTO measurementsDTO) { return modelMapper.map(measurementsDTO, Measurements.class); }
+    private MeasurementsDTO convertToDTO(Measurements measurements) { return modelMapper.map(measurements, MeasurementsDTO.class); }
 }

@@ -1,6 +1,6 @@
-package repositories;
+package ua.august.rest_weather_sensor.repositories;
 
-import entities.Sensors;
+import ua.august.rest_weather_sensor.entities.Sensors;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
