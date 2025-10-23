@@ -19,11 +19,18 @@ public class RestTemplateService {
 
     private final RestTemplate restTemplate;
 
+    final double MIN_AIR_TEMPERATURE = -100.0;
+    final double MAX_AIR_TEMPERATURE = 100.0;
+    final int MEASUREMENT_COUNT = 1000;
+
     @Value("${api.url.base}")
     private String baseUrl;
 
     @Value("${api.url.sensors.registration}")
-    private String registrationUrl;
+    private String sensorsRegistrationUrl;
+
+    @Value("${api.url.measurements.creation}")
+    private String creationMeasurementsUrl;
 
     @Autowired
     public RestTemplateService(RestTemplate restTemplate) {
@@ -31,14 +38,10 @@ public class RestTemplateService {
     }
 
     public SensorsRegistrationDTO registerSensor(String sensorsName) {
-
-        SensorsRegistrationDTO sensorsRegistrationDTO = new SensorsRegistrationDTO(sensorsName);
-
-        System.out.println("Регистрация сенсора с именем: " + sensorsRegistrationDTO.getName());
-
         try {
+            SensorsRegistrationDTO sensorsRegistrationDTO = new SensorsRegistrationDTO(sensorsName);
             return restTemplate.postForObject(
-                    registrationUrl,
+                    sensorsRegistrationUrl,
                     sensorsRegistrationDTO,
                     SensorsRegistrationDTO.class
             );
@@ -53,12 +56,9 @@ public class RestTemplateService {
 
         Random random = new Random();
 
-        double min = -100.0;
-        double max = 100.0;
+        for (double i = 0; i < MEASUREMENT_COUNT; i++) {
 
-        for (double i = 0; i < 1000; i++) {
-
-            double randomValue = random.nextDouble() * (max - min) + min;
+            double randomValue = random.nextDouble() * (MAX_AIR_TEMPERATURE - MIN_AIR_TEMPERATURE) + MIN_AIR_TEMPERATURE;
             boolean randomRaining = random.nextBoolean();
 
             MeasurementsDTO measurementsDTO = new MeasurementsDTO(
@@ -77,10 +77,8 @@ public class RestTemplateService {
 
     public void sendMeasurements(MeasurementsDTO measurementsDTO) {
 
-        String postUrl = baseUrl + "/add";
-
         try {
-            restTemplate.postForObject(postUrl, measurementsDTO, Void.class);
+            restTemplate.postForObject(creationMeasurementsUrl, measurementsDTO, Void.class);
         } catch (HttpClientErrorException e) {
             System.out.println("Ошибка при отправке измерений!" + e.getResponseBodyAsString());
         }

@@ -2,7 +2,6 @@ package ua.august.rest_weather_sensor.services;
 
 import org.modelmapper.ModelMapper;
 import ua.august.rest_weather_sensor.dto.MeasurementsDTO;
-import ua.august.rest_weather_sensor.dto.SensorsRegistrationDTO;
 import ua.august.rest_weather_sensor.entities.Measurements;
 import ua.august.rest_weather_sensor.entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
