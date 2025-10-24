@@ -40,6 +40,7 @@ public class RestTemplateService {
     public SensorsRegistrationDTO registerSensor(String sensorsName) {
         try {
             SensorsRegistrationDTO sensorsRegistrationDTO = new SensorsRegistrationDTO(sensorsName);
+            System.out.println("Регистрация сенсора с именем: " + sensorsRegistrationDTO.getName());
             return restTemplate.postForObject(
                     sensorsRegistrationUrl,
                     sensorsRegistrationDTO,
@@ -80,7 +81,7 @@ public class RestTemplateService {
         try {
             restTemplate.postForObject(creationMeasurementsUrl, measurementsDTO, Void.class);
         } catch (HttpClientErrorException e) {
-            System.out.println("Ошибка при отправке измерений!" + e.getResponseBodyAsString());
+            System.out.println("Ошибка при отправке показателей!" + e.getResponseBodyAsString());
         }
     }
 

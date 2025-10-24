@@ -1,6 +1,9 @@
 package ua.august.rest_weather_sensor.services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ua.august.rest_weather_sensor.dto.MeasurementsDTO;
 import ua.august.rest_weather_sensor.entities.Measurements;
 import ua.august.rest_weather_sensor.entities.Sensors;
@@ -8,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.august.rest_weather_sensor.repositories.MeasurementsRepository;
 
-import java.util.List;
 
 
 @Service
@@ -34,8 +36,9 @@ public class MeasurementsService {
         measurementsRepository.save(measurements);
     }
 
-    public List<Measurements> findAll() {
-        return measurementsRepository.findAll();
+    public Page<Measurements> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return measurementsRepository.findAll(pageable);
     }
 
     public Long findRainingMeasurements() {

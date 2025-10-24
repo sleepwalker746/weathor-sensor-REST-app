@@ -1,5 +1,6 @@
 package ua.august.rest_weather_sensor.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import ua.august.rest_weather_sensor.entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class SensorsController {
     }
     //registration(POST)
     @PostMapping("/registration")
+    @Operation(summary = "Регистрация нового сенсора", description = "Регестрирует новый сенсор в базе данных")
     public ResponseEntity<Sensors> registerSensor(@RequestBody Sensors sensor) {
         Sensors sensors = sensorsService.register(sensor);
         return ResponseEntity.ok(sensors);

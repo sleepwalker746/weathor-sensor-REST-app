@@ -1,18 +1,20 @@
 package ua.august.rest_weather_sensor.runner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpServerErrorException;
 import ua.august.rest_weather_sensor.dto.MeasurementsDTO;
 import ua.august.rest_weather_sensor.dto.SensorsRegistrationDTO;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import ua.august.rest_weather_sensor.services.RestTemplateService;
 
 import java.util.List;
 
 @Component
-public class DataClientRunner implements CommandLineRunner {
+public class DataClientRunner {
 
+    private static final Logger logger = LoggerFactory.getLogger(DataClientRunner.class);
     private final RestTemplateService restTemplateService;
     private static final String SENSOR_NAME = "TestSensor-Client";
 
@@ -20,36 +22,35 @@ public class DataClientRunner implements CommandLineRunner {
         this.restTemplateService = restTemplateService;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+    public void execute() throws Exception {
 
-        System.out.println("\n<<Пробный запуск клиента MARK-1>>");
+        logger.info("<< Run test of MARK-1 client >>");
 
-        System.out.println("\n=== 1. Регистрация сенсора ===");
+        logger.info("1. Registration of a new sensor");
 
         try {
             SensorsRegistrationDTO registeredSensor = restTemplateService.registerSensor(SENSOR_NAME);
-            System.out.println("\nСенсор успешно зарегестрирован под именем: " + registeredSensor);
+            logger.info("Sensor was successfully registered {} ", registeredSensor);
         } catch (HttpServerErrorException e) {
-            System.out.println("Сенсор с таким именем уже существует. Продолжаем отправку данных...");
+            logger.debug("Sensor with name {} is already registered. Continue to send data...", SENSOR_NAME);
         }
 
 
-        System.out.println("\n=== 2. Отправка 1000 случайных измерений ===");
+        logger.info("2. Sending 1000 random measurements");
 
         restTemplateService.sendRandomMeasurements(SENSOR_NAME);
 
-        System.out.println("\n=== 3. Получение всех измерений ===");
+        logger.info("3. Getting every measurements");
 
         ResponseEntity<List<MeasurementsDTO>> response = restTemplateService.getAllMeasurements();
         List<MeasurementsDTO> measurementsDTOs = response.getBody();
         if (measurementsDTOs != null) {
-            System.out.println("Количество измерений ровно: " + measurementsDTOs.size());
+            logger.info("Number of measurements is: {}", measurementsDTOs.size());
         } else {
-            System.out.println("Ошибка: Получен пустой список измерений");
+            logger.error("Error: Empty list of measurements has been received. Error code: {}", response.getStatusCode());
         }
 
-        System.out.println("\n<<Клиент MARK-1 завершил работу>>");
+        logger.info("<< MARK-1 client has completed the task >>");
 
     }
 }
