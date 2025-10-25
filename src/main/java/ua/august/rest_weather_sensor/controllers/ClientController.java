@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.august.rest_weather_sensor.runner.DataClientRunner;
 
@@ -18,22 +20,22 @@ public class ClientController {
     public ClientController(DataClientRunner dataClientRunner) {
         this.dataClientRunner = dataClientRunner;
     }
-    @Operation(summary = "Запуск тестового клиента", description = """
-            Выполняет последовательность действий:
+    @Operation(summary = "Test client launch", description = """
+            Executes a chain of actions:
             
-            1. Регистрирует сенсор с заданным именем (если он ещё не зарегистрирован в БД);
-            2. Отправляет 1000 случайных измерений температуры воздуха и кол-ва дождливых дней;
-            3. Получает список всех измерений и выводит их количество в консоль.
+            1. Registers a sensor with a specified name (if it is not already registered in the database);
+            2. Sends 1000 random measurements of air temperature and number of rainy days;
+            3. Receives a list of all measurements and outputs their quantity to the log.
             
-            Используется для проверки работоспособности REST API сервера.
+            Used to test the functionality of the REST API server.
             """)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Клиент успешно завершил работу, измерения отправлены"),
-            @ApiResponse(responseCode = "500", description = "Ошибка при выполнении клиента или отправки данных")
+            @ApiResponse(responseCode = "200", description = "Client has successfully completed the task, measurements have been sent."),
+            @ApiResponse(responseCode = "500", description = "Internal server error processing request")
     })
     @PostMapping("/run")
-    public String runClient() throws Exception {
-        dataClientRunner.execute();
-        return "Клиент выполнен!";
+    public ResponseEntity<String> runClient(@RequestParam String sensorName) throws Exception {
+        dataClientRunner.execute(sensorName);
+        return ResponseEntity.ok("Client executed for sensor" + sensorName);
     }
 }

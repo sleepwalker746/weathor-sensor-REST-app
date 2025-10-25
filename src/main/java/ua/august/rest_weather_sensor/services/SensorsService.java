@@ -4,6 +4,7 @@ import ua.august.rest_weather_sensor.entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.august.rest_weather_sensor.repositories.SensorsRepository;
+import util.SensorExistsException;
 
 @Service
 public class SensorsService {
@@ -17,7 +18,7 @@ public class SensorsService {
 
     public Sensors register(Sensors sensor) {
         sensorsRepository.findByName(sensor.getName()).ifPresent(s -> {
-            throw new RuntimeException("Сенсор с таким именем уже существует!");
+            throw new SensorExistsException("Sensor with name " +  sensor.getName() + " already exists!");
         });
         return sensorsRepository.save(sensor);
     }

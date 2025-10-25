@@ -23,12 +23,10 @@ public class MeasurementsService {
     public MeasurementsService(ModelMapper modelMapper, MeasurementsRepository measurementsRepository, SensorsService sensorsService) {
         this.modelMapper = modelMapper;
         this.measurementsRepository = measurementsRepository;
-
         this.sensorsService = sensorsService;
     }
 
     public void saveMeasurements(MeasurementsDTO measurementsDTO) {
-
         Measurements measurements = modelMapper.map(measurementsDTO, Measurements.class);
         String sensorName = measurementsDTO.getSensorsName();
         Sensors sensor = sensorsService.findByName(sensorName);

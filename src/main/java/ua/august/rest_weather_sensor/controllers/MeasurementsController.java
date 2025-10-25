@@ -33,7 +33,7 @@ public class MeasurementsController {
     }
 
     //index(GET)
-    @Operation(summary = "Получить все показатели", description = "Возвращает страницу из 10 показателей")
+    @Operation(summary = "Get all indicators", description = "Returns a page from 10 indicators")
     @GetMapping()
     public Page<Measurements> getAllMeasurements(@RequestParam(defaultValue = "0") int page,
                                                  @RequestParam(defaultValue = "10") int size) {
@@ -41,7 +41,7 @@ public class MeasurementsController {
     }
 
     //rainyDayCount(GET)
-    @Operation(summary = "Количество дождливых дней", description = "Возвращает количество дождливых дней")
+    @Operation(summary = "Number of rainy days", description = "Returns the number of rainy days")
     @GetMapping("/rainyDaysCount")
     public ResponseEntity<Long> getRainyDaysCount() {
         Long count = measurementsService.findRainingMeasurements();
@@ -50,12 +50,12 @@ public class MeasurementsController {
 
     //add(POST)
     @Operation(
-            summary = "Добавить измерение",
-            description = "Сохраняет нове показатели температуры воздух и информацию о дожде от определённого сенсора."
+            summary = "Add new measurements",
+            description = "Stores new air temperature measurements and rain information from a specific sensor"
     )
-    @ApiResponses({@ApiResponse(responseCode = "200", description = "Показатели успешно добавлены"),
-            @ApiResponse(responseCode = "400", description = "Ошибка: некоректная информация!"),
-            @ApiResponse(responseCode = "404", description = "Сенсор с таким именем не найден!")
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Measurements successfully added"),
+            @ApiResponse(responseCode = "400", description = "Error: incorrect information!"),
+            @ApiResponse(responseCode = "404", description = "Sensor with that not found!")
     })
 
     @PostMapping("/add")
@@ -79,7 +79,7 @@ public class MeasurementsController {
     @ExceptionHandler
     private ResponseEntity<MeasurementsErrorResponse> handleException(MeasurementNotCreatedException e) {
         MeasurementsErrorResponse response = new MeasurementsErrorResponse(
-                "Вычисления с такими данными не были созданы!",
+                "Measurements with such data have not been created!",
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
