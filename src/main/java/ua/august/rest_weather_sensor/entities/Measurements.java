@@ -18,7 +18,6 @@ public class Measurements {
     @Column(name = "value")
     @Min(value = -100, message = "Value must be between -100 and 100")
     @Max(value = 100, message = "Value must be between -100 and 100")
-    @NotNull
     private double value;
     @Column(name = "raining")
     private boolean raining;

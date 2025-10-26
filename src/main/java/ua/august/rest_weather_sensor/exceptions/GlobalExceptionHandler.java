@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.URI;
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -55,15 +57,22 @@ public class GlobalExceptionHandler {
     // Validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException e) {
-        var fieldError = e.getBindingResult().getFieldError();
-        String detail = fieldError != null ? fieldError.getDefaultMessage() : "Validation failed";
-
-        return createProblemDetail(
-                HttpStatus.BAD_REQUEST,
+        List<FieldValidationError> errors = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map (fieldError -> new FieldValidationError(fieldError.getField(),
+                        fieldError.getDefaultMessage()))
+                .collect(Collectors.toList());
+        ProblemDetail pd = createProblemDetail(HttpStatus.BAD_REQUEST,
                 "Validation failed",
-                detail,
+                "Request validation failed. See 'errors' property for details.",
                 ErrorCodes.VALIDATION_FAILED
         );
+
+        pd.setProperty("errors", errors);
+
+        return pd;
+
     }
 
     // Unknown errors
