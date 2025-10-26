@@ -16,8 +16,8 @@ public class Measurements {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "value")
-    @Min(value = -100, message = "Значение должно быть в пределах от -100")
-    @Max(value = 100, message = "Значение должно быть в пределах до 100")
+    @Min(value = -100, message = "Value must be between -100 and 100")
+    @Max(value = 100, message = "Value must be between -100 and 100")
     @NotNull
     private double value;
     @Column(name = "raining")

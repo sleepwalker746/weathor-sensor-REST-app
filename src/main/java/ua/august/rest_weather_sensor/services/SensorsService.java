@@ -3,8 +3,9 @@ package ua.august.rest_weather_sensor.services;
 import ua.august.rest_weather_sensor.entities.Sensors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.august.rest_weather_sensor.exceptions.SensorNotFoundException;
 import ua.august.rest_weather_sensor.repositories.SensorsRepository;
-import util.SensorExistsException;
+import ua.august.rest_weather_sensor.exceptions.SensorExistsException;
 
 @Service
 public class SensorsService {
@@ -25,7 +26,7 @@ public class SensorsService {
 
     public Sensors findByName(String name) {
         return sensorsRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Сенсор не найден!"));
+                .orElseThrow(() -> new SensorNotFoundException("Sensor with name " + name + " not found!"));
     }
 
 }

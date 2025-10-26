@@ -2,7 +2,7 @@ package ua.august.rest_weather_sensor.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +20,8 @@ public class Sensors {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name")
-    @NotEmpty(message = "Имя не может быть пустым!")
-    @Size(min = 3, max = 30, message = "Название сенсора должно быть только от 3 до 30 символов!")
+    @NotBlank(message = "Sensor name should not be blank!")
+    @Size(min = 3, max = 30, message = "Sensor name must be between 3 and 30 characters long!")
     private String name;
     @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
     @JsonIgnore

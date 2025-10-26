@@ -7,18 +7,12 @@ import org.springframework.data.domain.Page;
 import ua.august.rest_weather_sensor.dto.MeasurementsDTO;
 import ua.august.rest_weather_sensor.entities.Measurements;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ua.august.rest_weather_sensor.services.MeasurementsService;
-import util.MeasurementNotCreatedException;
-import util.MeasurementsErrorResponse;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/measurements")
@@ -55,33 +49,12 @@ public class MeasurementsController {
     )
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Measurements successfully added"),
             @ApiResponse(responseCode = "400", description = "Error: incorrect information!"),
-            @ApiResponse(responseCode = "404", description = "Sensor with that not found!")
+            @ApiResponse(responseCode = "404", description = "Sensor with that name not found!")
     })
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementsDTO measurementsDTO,
-                                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error : errors) {
-                errorMsg.append(error.getField())
-                        .append(" - ").append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new ValidationException(errorMsg.toString());
-        }
-
+    public ResponseEntity<HttpStatus> add(@RequestBody @Valid MeasurementsDTO measurementsDTO) {
         measurementsService.saveMeasurements(measurementsDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<MeasurementsErrorResponse> handleException(MeasurementNotCreatedException e) {
-        MeasurementsErrorResponse response = new MeasurementsErrorResponse(
-                "Measurements with such data have not been created!",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

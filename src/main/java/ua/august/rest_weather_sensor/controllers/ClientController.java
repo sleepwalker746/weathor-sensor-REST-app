@@ -34,7 +34,7 @@ public class ClientController {
             @ApiResponse(responseCode = "500", description = "Internal server error processing request")
     })
     @PostMapping("/run")
-    public ResponseEntity<String> runClient(@RequestParam String sensorName) throws Exception {
+    public ResponseEntity<String> runClient(@RequestParam String sensorName) {
         dataClientRunner.execute(sensorName);
         return ResponseEntity.ok("Client executed for sensor" + sensorName);
     }

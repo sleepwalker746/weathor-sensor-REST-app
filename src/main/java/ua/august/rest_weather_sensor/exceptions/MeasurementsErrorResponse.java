@@ -1,4 +1,4 @@
-package util;
+package ua.august.rest_weather_sensor.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

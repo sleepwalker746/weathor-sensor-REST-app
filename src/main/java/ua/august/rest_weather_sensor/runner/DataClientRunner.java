@@ -24,7 +24,7 @@ public class DataClientRunner {
         restTemplateService.registerSensor(sensorName)
                 .ifPresentOrElse(
                         s -> logger.info("Sensor {} registered successfully", sensorName),
-                        () -> logger.info("Sensor {} already registered", sensorName)
+                        () -> logger.warn("Sensor {} already registered", sensorName)
                 );
     }
 
