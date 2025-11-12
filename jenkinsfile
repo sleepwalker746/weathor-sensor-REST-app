@@ -34,7 +34,10 @@ pipeline {
             echo 'Pipeline is complete.'
         }
         failure {
-            mail to: 'devops@example.com', subject: 'BUILD FAILURE: weather-app'
+            mail to: 'devops@example.com',
+                    subject: 'BUILD FAILURE: weather-app',
+                    body: "Build #${env.BUILD_NUMBER} of the weather-app project ended with an error. Check the logs: ${env.BUILD_URL}"
+
         }
     }
 }
