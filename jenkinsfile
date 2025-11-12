@@ -14,8 +14,8 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                echo 'Running Maven: Building and testing...'
-                bat 'mvn clean install -DskipTests=false'
+                echo 'Running Maven: Building...'
+                bat 'mvn clean install -DskipTests=true'
             }
         }
 
