@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo 'Code successfully received from Git'
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                echo 'Running Maven: Building and testing...'
+                bat 'mvn clean install -DskipTests=false'
+            }
+        }
+
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                echo 'JAR file saved as a build artifact'
+            }
+        }
+
+        stage('Deploy to DEV') {
+            steps {
+                echo 'Deployment on test server...'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline is complete.'
+        }
+        failure {
+            mail to: 'devops@example.com', subject: 'BUILD FAILURE: weather-app'
+        }
+    }
+}
