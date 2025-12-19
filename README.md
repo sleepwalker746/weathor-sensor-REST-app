@@ -1,2 +1,2 @@
 # weathor-sensor-REST-app
-A simple project consisting of a Spring Boot REST API and a Java client using RestTemplate to send and receive data between applications.
+Two-module Spring Boot project consisting of an API service and a data client simulating weather sensors. The client generates random temperature and rainfall values and sends them to the API via a resilient RestTemplate integration with error handling. The API stores measurements through DTO-Entity mapping and links Sensor and Measurement entities.
